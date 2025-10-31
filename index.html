@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Blog Generator - Create SEO Blogs in Seconds</title>
+  <meta name="description" content="Instantly generate blog titles, intros, outlines, and full posts using AI. Free demo available.">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #161b22;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+    h1 { text-align: center; }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
+    }
+    button {
+      background-color: #1f6feb;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover { background-color: #388bfd; }
+    #output {
+      margin-top: 20px;
+      white-space: pre-wrap;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      padding: 15px;
+      border-radius: 8px;
+      min-height: 150px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧠 AI Blog Generator</h1>
+    <input type="text" id="topic" placeholder="Enter your blog topic...">
+    <select id="type">
+      <option value="title">Generate Blog Titles</option>
+      <option value="intro">Generate Intro</option>
+      <option value="outline">Generate Outline</option>
+      <option value="paragraph">Generate Paragraph</option>
+      <option value="full">Generate Full Blog</option>
+    </select>
+    <input type="text" id="tone" placeholder="Tone (optional: friendly, formal, etc)">
+    <button id="generateBtn">Generate</button>
+    <div id="output">Your generated blog will appear here...</div>
+  </div>
+
+  <script>
+    document.getElementById('generateBtn').addEventListener('click', async () => {
+      const topic = document.getElementById('topic').value;
+      const type = document.getElementById('type').value;
+      const tone = document.getElementById('tone').value;
+
+      if(!topic) return alert("Please enter a blog topic!");
+
+      const prompt = `Write a ${type} for a blog about "${topic}". Tone: ${tone}`;
+      document.getElementById('output').innerText = "Generating...";
+
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+      });
+      const data = await response.json();
+      document.getElementById('output').innerText = data.text || "Error: no response";
+    });
+  </script>
+</body>
+</html>
